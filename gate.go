@@ -61,3 +61,8 @@ func (d Date) Before(date Date) bool {
 
 	return year <= xyear && month <= xmonth && day < xday
 }
+
+// YearDay is wrapper of YearDay method of time.Time
+func (d Date) YearDay() int {
+	return d.t.YearDay()
+}
