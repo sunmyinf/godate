@@ -1,4 +1,5 @@
 # gate
+[![GoDoc](https://godoc.org/github.com/sunmyinf/gate?status.svg)](https://godoc.org/github.com/sunmyinf/gate)  
 `gate` is package wrapping time.Time to handle date easily in go.
 
 ## Get Started
