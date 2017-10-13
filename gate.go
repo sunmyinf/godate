@@ -51,7 +51,7 @@ func (d Date) After(date Date) bool {
 	year, month, day := d.t.Date()
 	xyear, xmonth, xday := date.t.Date()
 
-	return year > xyear || month > xmonth || day > xday
+	return year >= xyear && month >= xmonth && day > xday
 }
 
 // Before reports whether the time instant d is before date.
@@ -59,5 +59,5 @@ func (d Date) Before(date Date) bool {
 	year, month, day := d.t.Date()
 	xyear, xmonth, xday := date.t.Date()
 
-	return year < xyear || month < xmonth || day < xday
+	return year <= xyear && month <= xmonth && day < xday
 }
