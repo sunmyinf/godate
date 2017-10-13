@@ -33,7 +33,7 @@ func Parse(layout, value string) (Date, error) {
 	return Date{t: p}, nil
 }
 
-// String returns formatted string
+// String is wrapper of Format method of time.Time
 func (d Date) Format(format dateFormat) string {
 	return d.t.Format(string(format))
 }
