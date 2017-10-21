@@ -1,4 +1,4 @@
-package gate
+package godate
 
 import "time"
 
