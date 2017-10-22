@@ -72,3 +72,37 @@ func (d Date) Before(date Date) bool {
 func (d Date) YearDay() int {
 	return d.t.YearDay()
 }
+
+// IsZero reports whether t represents the zero time instant,
+// January 1, year 1, 00:00:00 UTC.
+func (d Date) IsZero() bool {
+	return d.t.IsZero()
+}
+
+// In returns Date in specified time zone
+func (d Date) In(name string) (Date, error) {
+	loc, err := time.LoadLocation(name)
+	if err != nil {
+		return Date{}, err
+	}
+
+	d.t = d.t.In(loc)
+	return d, nil
+}
+
+// Local is Wrapper of Local method of time.Time
+func (d Date) Local() Date {
+	d.t = d.t.Local()
+	return d
+}
+
+// UTC is Wrapper of UTC method of time.Time
+func (d Date) UTC() Date {
+	d.t = d.t.UTC()
+	return d
+}
+
+// Zone is Wrapper of Zone method of time.Time
+func (d Date) Zone() (name string, offset int) {
+	return d.t.Zone()
+}
