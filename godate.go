@@ -38,6 +38,11 @@ func (d Date) Format(format dateFormat) string {
 	return d.t.Format(string(format))
 }
 
+// String returns string of RFC3339 date format
+func (d Date) String() string {
+	return d.Format(RFC3339)
+}
+
 // Equal returns bool resulted from comparing two date object
 func (d Date) Equal(date Date) bool {
 	year, month, day := d.t.Date()
