@@ -4,6 +4,7 @@ import "time"
 
 type dateFormat string
 
+// These are format for Date
 const (
 	ANSIC    dateFormat = "Jan _2 2006"
 	RubyDate dateFormat = "Jan 02 2006"
@@ -33,7 +34,7 @@ func Parse(layout, value string) (Date, error) {
 	return Date{t: p}, nil
 }
 
-// String is wrapper of Format method of time.Time
+// Format is wrapper of Format method of time.Time
 func (d Date) Format(format dateFormat) string {
 	return d.t.Format(string(format))
 }
