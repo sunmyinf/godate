@@ -76,11 +76,13 @@ func (d *Date) Scan(value interface{}) error {
 		if err != nil {
 			return err
 		}
+		return nil
 	case []byte:
 		*d, err = Parse(RFC3339, string(x))
 		if err != nil {
 			return err
 		}
+		return nil
 	case time.Time:
 		*d = Date{x}
 		return nil
