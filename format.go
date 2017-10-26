@@ -35,6 +35,11 @@ func (d Date) String() string {
 	return d.Format(RFC3339)
 }
 
+// AppendFormat is wrapper of AppendFormat method of time.Time
+func (d Date) AppendFormat(b []byte, layout string) []byte {
+	return d.t.AppendFormat(b, layout)
+}
+
 // MarshalJSON implements the json.Marshaler interface.
 // The time is a quoted string in RFC 3339 format.
 func (d Date) MarshalJSON() ([]byte, error) {
@@ -46,7 +51,7 @@ func (d Date) MarshalJSON() ([]byte, error) {
 
 	b := make([]byte, 0, len(RFC3339)+2)
 	b = append(b, '"')
-	b = append(b, byte(d.Format(RFC3339)))
+	b = d.AppendFormat(b, RFC3339)
 	b = append(b, '"')
 	return b, nil
 }
