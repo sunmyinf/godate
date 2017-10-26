@@ -17,13 +17,6 @@ const (
 	zoneAbbrLA = "PDT"
 )
 
-func TestToday(t *testing.T) {
-	today := Today()
-	if today.t.IsZero() {
-		t.Errorf("unexported t field of date is zero")
-	}
-}
-
 func TestDate_In(t *testing.T) {
 	tests := []struct {
 		zoneName string
