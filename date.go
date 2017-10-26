@@ -15,6 +15,11 @@ type Date struct {
 	t time.Time
 }
 
+// New returns Date from specified year, month, day and location
+func New(year, month, day int, loc *time.Location) Date {
+	return Date{time.Date(year, time.Month(month), day, 0, 0, 0, 0, loc)}
+}
+
 // Today returns Date of today
 func Today() Date {
 	return Date{
