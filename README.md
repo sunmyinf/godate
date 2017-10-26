@@ -1,5 +1,6 @@
 # godate
-[![GoDoc](https://godoc.org/github.com/sunmyinf/godate?status.svg)](https://godoc.org/github.com/sunmyinf/godate)  
+[![GoDoc](https://godoc.org/github.com/sunmyinf/godate?status.svg)](https://godoc.org/github.com/sunmyinf/godate)
+[![Go Report Card](https://goreportcard.com/badge/github.com/sunmyinf/godate)](https://goreportcard.com/report/github.com/sunmyinf/godate)  
 `godate` is package wrapping time.Time to handle date easily in go.
 
 ## Get Started
