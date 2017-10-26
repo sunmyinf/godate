@@ -1,5 +1,7 @@
 package godate
 
+import "time"
+
 // Equal reports whether d and u represent the same time instant.
 func (d Date) Equal(u Date) bool {
 	return d.Year() == u.Year() &&
@@ -28,52 +30,56 @@ func (d Date) Add(years, months, days int) Date {
 	return Date{d.t.AddDate(years, months, days)}
 }
 
+const (
+	// Day represents a day based on time.Duration
+	Day time.Duration = 24 * time.Hour
+
+	daysPerBasicYear time.Duration = 365 * Day
+	daysPerLeapYear  time.Duration = 366 * Day
+)
+
 // Since returns the time elapsed since d.
 // It is shorthand for godate.Today().Sub(d).
-func Since(d Date) int64 {
+func Since(d Date) time.Duration {
 	return Today().Sub(d)
 }
 
-const (
-	daysPerBasicYear int64 = 365
-	daysPerLeapYear  int64 = 366
-)
-
 // Sub returns the days d-u.
-func (d Date) Sub(u Date) (days int64) {
+func (d Date) Sub(u Date) time.Duration {
 	dy, uy := d.Year(), u.Year()
 	if dy == uy {
-		return int64(d.YearDay() - u.YearDay())
+		return time.Duration(d.YearDay()-u.YearDay()) * Day
 	}
 
+	var dd time.Duration
 	if dy > uy {
 		for y := uy; y <= dy; y++ {
 			switch y {
 			case uy:
-				days += daysPer(y) - int64(u.YearDay())
+				dd += daysPer(y) - time.Duration(u.YearDay())*Day
 			case dy:
-				days += int64(d.YearDay())
+				dd += time.Duration(d.YearDay()) * Day
 			default:
-				days += daysPer(y)
+				dd += daysPer(y)
 			}
 		}
 	} else {
 		for y := uy; dy <= y; y-- {
 			switch y {
 			case uy:
-				days -= int64(u.YearDay())
+				dd -= time.Duration(u.YearDay()) * Day
 			case dy:
-				days -= daysPer(y) - int64(d.YearDay())
+				dd -= daysPer(y) - time.Duration(d.YearDay())*Day
 			default:
-				days -= daysPer(y)
+				dd -= daysPer(y)
 			}
 		}
 
 	}
-	return
+	return dd
 }
 
-func daysPer(year int) int64 {
+func daysPer(year int) time.Duration {
 	if isLeapYear(year) {
 		return daysPerLeapYear
 	}
