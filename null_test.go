@@ -13,3 +13,7 @@ func TestNullDateFrom(t *testing.T) {
 func TestNullDate_SetValid(t *testing.T) {
 
 }
+
+func TestNullDate_Ptr(t *testing.T) {
+
+}

@@ -85,3 +85,11 @@ func (nd *NullDate) SetValid(v Date) {
 	nd.Date = v
 	nd.Valid = true
 }
+
+// Ptr returns a pointer to this Date's value, or a nil pointer if this Date is null.
+func (nd NullDate) Ptr() *Date {
+	if !nd.Valid {
+		return nil
+	}
+	return &nd.Date
+}
