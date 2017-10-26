@@ -24,3 +24,7 @@ func makeFixedDate() (Date, error) {
 	}
 	return d, err
 }
+
+func TestDate_Unix(t *testing.T) {
+
+}

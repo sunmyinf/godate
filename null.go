@@ -51,6 +51,14 @@ func NullDateFrom(d Date) NullDate {
 	return NewNullDate(d, true)
 }
 
+// NullDateFromPtr creates a new Date that will be null if t is nil.
+func NullDateFromPtr(d *Date) NullDate {
+	if d == nil {
+		return NewNullDate(Date{}, false)
+	}
+	return NewNullDate(*d, true)
+}
+
 // MarshalJSON implements json.Marshaler.
 // It will encode null if this date is null.
 func (nd NullDate) MarshalJSON() ([]byte, error) {
