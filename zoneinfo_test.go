@@ -17,13 +17,6 @@ const (
 	zoneAbbrLA = "PDT"
 )
 
-func TestToday(t *testing.T) {
-	today := Today()
-	if today.t.IsZero() {
-		t.Errorf("unexported t field of date is zero")
-	}
-}
-
 func TestDate_In(t *testing.T) {
 	tests := []struct {
 		zoneName string
@@ -48,7 +41,7 @@ func TestDate_In(t *testing.T) {
 	}
 
 	for i, test := range tests {
-		d, err := makeBaseDate()
+		d, err := makeFixedDate()
 		if err != nil {
 			t.Error(err)
 		}
@@ -64,7 +57,7 @@ func TestDate_In(t *testing.T) {
 }
 
 func TestDate_UTC(t *testing.T) {
-	d, err := makeBaseDate()
+	d, err := makeFixedDate()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -80,7 +73,7 @@ func TestDate_UTC(t *testing.T) {
 }
 
 func TestDate_Local(t *testing.T) {
-	d, err := makeBaseDate()
+	d, err := makeFixedDate()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,7 +86,7 @@ func TestDate_Local(t *testing.T) {
 }
 
 func TestDate_Location(t *testing.T) {
-	d, err := makeBaseDate()
+	d, err := makeFixedDate()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -119,7 +112,7 @@ func TestDate_Location(t *testing.T) {
 }
 
 func TestDate_Zone(t *testing.T) {
-	d, err := makeBaseDate()
+	d, err := makeFixedDate()
 	if err != nil {
 		t.Fatal(err)
 	}
