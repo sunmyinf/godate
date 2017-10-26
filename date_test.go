@@ -9,18 +9,6 @@ func TestToday(t *testing.T) {
 	}
 }
 
-func TestParse(t *testing.T) {
-
-}
-
-func TestDate_Format(t *testing.T) {
-
-}
-
-func TestDate_String(t *testing.T) {
-
-}
-
 func TestDate_YearDay(t *testing.T) {
 
 }
