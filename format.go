@@ -1,7 +1,9 @@
 package godate
 
 import (
+	"database/sql/driver"
 	"errors"
+	"fmt"
 	"time"
 )
 
@@ -60,4 +62,29 @@ func (d *Date) UnmarshalJSON(data []byte) error {
 	var err error
 	*d, err = Parse(`"`+time.RFC3339+`"`, string(data))
 	return err
+}
+
+// Value implements the driver Valuer interface.
+func (d Date) Value() (driver.Value, error) { return d.String(), nil }
+
+// Scan implements the sql.Scanner interface.
+func (d *Date) Scan(value interface{}) error {
+	var err error
+	switch x := value.(type) {
+	case string:
+		*d, err = Parse(RFC3339, x)
+		if err != nil {
+			return err
+		}
+	case []byte:
+		*d, err = Parse(RFC3339, string(x))
+		if err != nil {
+			return err
+		}
+	case time.Time:
+		*d = Date{x}
+		return nil
+	default:
+		return fmt.Errorf("godate: cannot scan type %T into godate.Date: %v", value, value)
+	}
 }
