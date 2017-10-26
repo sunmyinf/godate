@@ -1,6 +1,9 @@
 package godate
 
-import "time"
+import (
+	"errors"
+	"time"
+)
 
 // These are string format for Date
 const (
@@ -28,6 +31,22 @@ func (d Date) Format(format string) string {
 // String returns string of RFC3339 date format
 func (d Date) String() string {
 	return d.Format(RFC3339)
+}
+
+// MarshalJSON implements the json.Marshaler interface.
+// The time is a quoted string in RFC 3339 format.
+func (d Date) MarshalJSON() ([]byte, error) {
+	if y := d.Year(); y < 0 || y >= 10000 {
+		// RFC 3339 is clear that years are 4 digits exactly.
+		// See golang.org/issue/4556#c15 for more discussion.
+		return nil, errors.New("Time.MarshalJSON: year outside of range [0,9999]")
+	}
+
+	b := make([]byte, 0, len(RFC3339)+2)
+	b = append(b, '"')
+	b = append(b, byte(d.Format(RFC3339)))
+	b = append(b, '"')
+	return b, nil
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
