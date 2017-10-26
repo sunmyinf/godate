@@ -2,14 +2,12 @@ package godate
 
 import "time"
 
-type dateFormat string
-
-// These are format for Date
+// These are string format for Date
 const (
-	ANSIC    dateFormat = "Jan _2 2006"
-	RubyDate dateFormat = "Jan 02 2006"
-	RFC822   dateFormat = "02 Jan 06"
-	RFC3339  dateFormat = "2006-01-02"
+	ANSIC    = "Jan _2 2006"
+	RubyDate = "Jan 02 2006"
+	RFC822   = "02 Jan 06"
+	RFC3339  = "2006-01-02"
 )
 
 // Date handles time.Time as date handler
@@ -20,7 +18,7 @@ type Date struct {
 // Today returns Date of today
 func Today() Date {
 	return Date{
-		t: time.Now().Truncate(time.Hour * 24),
+		t: time.Now(),
 	}
 }
 
@@ -35,8 +33,8 @@ func Parse(layout, value string) (Date, error) {
 }
 
 // Format is wrapper of Format method of time.Time
-func (d Date) Format(format dateFormat) string {
-	return d.t.Format(string(format))
+func (d Date) Format(format string) string {
+	return d.t.Format(format)
 }
 
 // String returns string of RFC3339 date format
@@ -71,4 +69,10 @@ func (d Date) Before(date Date) bool {
 // YearDay is wrapper of YearDay method of time.Time
 func (d Date) YearDay() int {
 	return d.t.YearDay()
+}
+
+// IsZero reports whether t represents the zero time instant,
+// January 1, year 1, 00:00:00 UTC.
+func (d Date) IsZero() bool {
+	return d.t.IsZero()
 }
