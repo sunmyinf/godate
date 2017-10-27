@@ -72,19 +72,6 @@ func TestDate_UTC(t *testing.T) {
 	}
 }
 
-func TestDate_Local(t *testing.T) {
-	d, err := makeFixedDate()
-	if err != nil {
-		t.Fatal(err)
-	}
-	subject := d.Local()
-
-	if subject.Local().t.Location().String() != zoneLocal {
-		t.Errorf("expected %s, but got %s",
-			zoneLocal, subject.Local().t.Location().String())
-	}
-}
-
 func TestDate_Location(t *testing.T) {
 	d, err := makeFixedDate()
 	if err != nil {
