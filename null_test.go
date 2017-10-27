@@ -78,3 +78,29 @@ func TestNullDate_Ptr(t *testing.T) {
 		t.Errorf("expected Ptr returns pointer, but got %v", v.Kind())
 	}
 }
+
+func TestNullDate_String(t *testing.T) {
+	nd := NullDateFromPtr(nil)
+	if nd.String() != "" {
+		t.Errorf("expected receive empty string, but got %s", nd.String())
+	}
+
+	d := New(2017, 10, 27, time.UTC)
+	nd = NullDateFrom(d)
+	if nd.String() != "2017-10-27" {
+		t.Errorf("expected receive '2017-10-27', but got %s", nd.String())
+	}
+}
+
+func TestNullDate_Format(t *testing.T) {
+	nd := NullDateFromPtr(nil)
+	if nd.Format(RFC3339) != "" {
+		t.Errorf("expected receive empty string, but got %s", nd.String())
+	}
+
+	d := New(2017, 10, 27, time.UTC)
+	nd = NullDateFrom(d)
+	if nd.Format("2006/01/02") != "2017/10/27" {
+		t.Errorf("expected receive '2017/10/27', but got %s", nd.String())
+	}
+}
