@@ -110,7 +110,7 @@ func (nd NullDate) String() string {
 	return nd.Date.String()
 }
 
-// String wraps Date.Format(). if nd.Date is nil, return empty string.
+// Format wraps Date.Format(). if nd.Date is nil, return empty string.
 func (nd NullDate) Format(layout string) string {
 	if !nd.Valid {
 		return ""
