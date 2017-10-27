@@ -14,7 +14,7 @@ func TestToday(t *testing.T) {
 
 func TestDate_YearDay(t *testing.T) {
 	d := New(2017, 10, 27, time.UTC)
-	if d.YearDay() != 302 {
+	if d.YearDay() != 300 {
 		t.Errorf("expected 302 as the 2017-10-27's YearDay, but got %d", d.YearDay())
 	}
 

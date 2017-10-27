@@ -35,7 +35,8 @@ func TestNullDateFrom(t *testing.T) {
 }
 
 func TestNullDateFromPtr(t *testing.T) {
-	nd := NullDateFromPtr(&New(2017, 10, 27, time.UTC))
+	d := New(2017, 10, 27, time.UTC)
+	nd := NullDateFromPtr(&d)
 	if !nd.Valid {
 		t.Errorf("expected valid, but invalid")
 	}

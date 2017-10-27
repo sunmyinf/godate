@@ -14,15 +14,12 @@ func TestParse(t *testing.T) {
 		t.Errorf("expected String() returns '2017-10-20', but got %s", d.String())
 	}
 
-	d, err = Parse("20060102Z", "20171020JST")
+	d, err = Parse("20060102", "20171020")
 	if err != nil {
 		t.Errorf("expected error not raised, but got=%v", err)
 	}
 	if d.String() != "2017-10-20" {
 		t.Errorf("expected String() returns '2017-10-20', but got %s", d.String())
-	}
-	if zn, _ := d.Zone(); zn != "JST" {
-		t.Errorf("expected zone name 'JST', but got %s", zn)
 	}
 
 	_, err = Parse("20161020", "2017-10-20")
