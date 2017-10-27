@@ -11,18 +11,28 @@ func (d Date) Equal(u Date) bool {
 
 // After reports whether the time instant d is after u.
 func (d Date) After(u Date) bool {
-	return !(d.Equal(u) ||
-		d.Year() < u.Year() ||
-		d.Month() < u.Month() ||
-		d.Day() < u.Day())
+	if d.Equal(u) {
+		return false
+	}
+	if d.Year() > u.Year() {
+		return true
+	} else if d.Year() < u.Year() {
+		return false
+	}
+	return d.YearDay() > u.YearDay()
 }
 
 // Before reports whether the time instant d is before u.
 func (d Date) Before(u Date) bool {
-	return !(d.Equal(u) ||
-		d.Year() > u.Year() ||
-		d.Month() > u.Month() ||
-		d.Day() > u.Day())
+	if d.Equal(u) {
+		return false
+	}
+	if d.Year() < u.Year() {
+		return true
+	} else if d.Year() > u.Year() {
+		return false
+	}
+	return d.YearDay() < u.YearDay()
 }
 
 // Add year, month, day to d

@@ -1,6 +1,7 @@
 package godate
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
@@ -37,56 +38,58 @@ func TestDate_Equal(t *testing.T) {
 
 func TestDate_After(t *testing.T) {
 	d := Today()
-	u := d
 
 	tests := []comparingTest{
-		{u.Add(-1, 0, 0), true},
-		{u.Add(0, -1, 0), true},
-		{u.Add(0, 0, -1), true},
-		{u, false},
-		{u.Add(1, 0, 0), false},
-		{u.Add(0, 1, 0), false},
-		{u.Add(0, 0, 1), false},
-		{Date{u.t.Add(-time.Hour)}, false},
-		{Date{u.t.Add(-time.Minute)}, false},
-		{Date{u.t.Add(-time.Second)}, false},
-		{Date{u.t.Add(-time.Millisecond)}, false},
-		{Date{u.t.Add(-time.Microsecond)}, false},
-		{Date{u.t.Add(-time.Nanosecond)}, false},
+		{d.Add(-1, 1, 1), true},
+		{d.Add(0, -1, 1), true},
+		{d.Add(0, 0, -1), true},
+		{d, false},
+		{d.Add(1, -1, -1), false},
+		{d.Add(0, 1, -1), false},
+		{d.Add(0, 0, 1), false},
+		{Date{d.t.Add(-time.Hour)}, false},
+		{Date{d.t.Add(-time.Minute)}, false},
+		{Date{d.t.Add(-time.Second)}, false},
+		{Date{d.t.Add(-time.Millisecond)}, false},
+		{Date{d.t.Add(-time.Microsecond)}, false},
+		{Date{d.t.Add(-time.Nanosecond)}, false},
 	}
 
 	for i, test := range tests {
+		fmt.Println("------")
+		fmt.Println(i)
+		fmt.Println(d)
+		fmt.Println(test.u)
 		if d.After(test.u) != test.expectedResult {
 			t.Errorf("expected result is %v, but got %v. d=%v, u=%v, test idx=%d",
-				test.expectedResult, d.Equal(test.u), d, test.u, i)
+				test.expectedResult, d.After(test.u), d, test.u, i)
 		}
 	}
 }
 
 func TestDate_Before(t *testing.T) {
 	d := Today()
-	u := d
 
 	tests := []comparingTest{
-		{u.Add(1, 0, 0), true},
-		{u.Add(0, 1, 0), true},
-		{u.Add(0, 0, 1), true},
-		{u, false},
-		{u.Add(-1, 0, 0), false},
-		{u.Add(0, -1, 0), false},
-		{u.Add(0, 0, -1), false},
-		{Date{u.t.Add(time.Hour)}, false},
-		{Date{u.t.Add(time.Minute)}, false},
-		{Date{u.t.Add(time.Second)}, false},
-		{Date{u.t.Add(time.Millisecond)}, false},
-		{Date{u.t.Add(time.Microsecond)}, false},
-		{Date{u.t.Add(time.Nanosecond)}, false},
+		{d.Add(1, -1, -1), true},
+		{d.Add(0, 1, -1), true},
+		{d.Add(0, 0, 1), true},
+		{d, false},
+		{d.Add(-1, 1, 1), false},
+		{d.Add(0, -1, 1), false},
+		{d.Add(0, 0, -1), false},
+		{Date{d.t.Add(time.Hour)}, false},
+		{Date{d.t.Add(time.Minute)}, false},
+		{Date{d.t.Add(time.Second)}, false},
+		{Date{d.t.Add(time.Millisecond)}, false},
+		{Date{d.t.Add(time.Microsecond)}, false},
+		{Date{d.t.Add(time.Nanosecond)}, false},
 	}
 
 	for i, test := range tests {
 		if d.Before(test.u) != test.expectedResult {
 			t.Errorf("idx=%d: expected result is %v, but got %v. d=%v, u=%v",
-				i, test.expectedResult, d.Equal(test.u), d, test.u)
+				i, test.expectedResult, d.Before(test.u), d, test.u)
 		}
 	}
 }
