@@ -65,7 +65,7 @@ func (d *Date) UnmarshalJSON(data []byte) error {
 	}
 	// Fractional seconds are handled implicitly by Parse.
 	var err error
-	*d, err = Parse(`"`+time.RFC3339+`"`, string(data))
+	*d, err = Parse(`"`+RFC3339+`"`, string(data))
 	return err
 }
 
