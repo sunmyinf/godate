@@ -35,7 +35,7 @@ func (nd NullDate) Value() (driver.Value, error) {
 	if !nd.Valid {
 		return nil, nil
 	}
-	return nd.Date, nil
+	return nd.Date.String(), nil
 }
 
 // NewNullDate creates a new Date.
