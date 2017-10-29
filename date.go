@@ -48,5 +48,5 @@ func (d Date) Day() int {
 // Unix returns t as a Unix time, the number of seconds elapsed
 // Date.Unix() should calculate Unix time not including time.
 func (d Date) Unix() int64 {
-	return d.t.Round(time.Hour).Unix()
+	return d.t.Round(time.Hour * 24).Unix()
 }
