@@ -11,7 +11,7 @@ import (
 // NullDate represents a date that may be null.
 type NullDate struct {
 	Date  Date
-	Valid bool // Valid is true if Int64 is not NULL
+	Valid bool // Valid is true if Date is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -46,12 +46,12 @@ func NewNullDate(d Date, valid bool) NullDate {
 	}
 }
 
-// NullDateFrom creates a new Time that will always be valid.
+// NullDateFrom creates a new NullDate that will always be valid.
 func NullDateFrom(d Date) NullDate {
 	return NewNullDate(d, true)
 }
 
-// NullDateFromPtr creates a new Date that will be null if t is nil.
+// NullDateFromPtr creates a new Date that will be null if d is nil.
 func NullDateFromPtr(d *Date) NullDate {
 	if d == nil {
 		return NewNullDate(Date{}, false)
@@ -59,7 +59,7 @@ func NullDateFromPtr(d *Date) NullDate {
 	return NewNullDate(*d, true)
 }
 
-// MarshalJSON implements json.Marshaler.
+// MarshalJSON implements json.Marshaller.
 // It will encode null if this date is null.
 func (nd NullDate) MarshalJSON() ([]byte, error) {
 	if !nd.Valid {
@@ -68,7 +68,7 @@ func (nd NullDate) MarshalJSON() ([]byte, error) {
 	return nd.Date.MarshalJSON()
 }
 
-// UnmarshalJSON implements json.Unmarshaler.
+// UnmarshalJSON implements json.Unmarshaller.
 func (nd *NullDate) UnmarshalJSON(data []byte) error {
 	var err error
 	var v interface{}
@@ -102,7 +102,7 @@ func (nd NullDate) Ptr() *Date {
 	return &nd.Date
 }
 
-// String wraps Date.String(). if nd.Date is nil, return empty string.
+// String wraps Date.String(). If nd.Date is nil, return empty string.
 func (nd NullDate) String() string {
 	if !nd.Valid {
 		return ""
@@ -110,7 +110,7 @@ func (nd NullDate) String() string {
 	return nd.Date.String()
 }
 
-// Format wraps Date.Format(). if nd.Date is nil, return empty string.
+// Format wraps Date.Format(). If nd.Date is nil, return empty string.
 func (nd NullDate) Format(layout string) string {
 	if !nd.Valid {
 		return ""

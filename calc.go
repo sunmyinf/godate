@@ -54,49 +54,7 @@ func Since(d Date) time.Duration {
 	return Today().Sub(d)
 }
 
-// Sub returns the days d-u.
+// Sub returns the Duration resulted from d-u.
 func (d Date) Sub(u Date) time.Duration {
-	dy, uy := d.Year(), u.Year()
-	if dy == uy {
-		return time.Duration(d.YearDay()-u.YearDay()) * Day
-	}
-
-	var dd time.Duration
-	if dy > uy {
-		for y := uy; y <= dy; y++ {
-			switch y {
-			case uy:
-				dd += daysPer(y) - time.Duration(u.YearDay())*Day
-			case dy:
-				dd += time.Duration(d.YearDay()) * Day
-			default:
-				dd += daysPer(y)
-			}
-		}
-	} else {
-		for y := uy; dy <= y; y-- {
-			switch y {
-			case uy:
-				dd -= time.Duration(u.YearDay()) * Day
-			case dy:
-				dd -= daysPer(y) - time.Duration(d.YearDay())*Day
-			default:
-				dd -= daysPer(y)
-			}
-		}
-
-	}
-	return dd
-}
-
-func daysPer(year int) time.Duration {
-	if isLeapYear(year) {
-		return daysPerLeapYear
-	}
-	return daysPerBasicYear
-}
-
-// isLeap is implemented in time package
-func isLeapYear(year int) bool {
-	return year%4 == 0 && (year%100 != 0 || year%400 == 0)
+	return d.t.Sub(u.t)
 }
