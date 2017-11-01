@@ -22,7 +22,7 @@ func Parse(layout, value string) (Date, error) {
 		return Date{}, err
 	}
 
-	return Date{p}, nil
+	return Date{p.Round(Day)}, nil
 }
 
 // Format is wrapper of Format method of time.Time
@@ -40,7 +40,7 @@ func (d Date) AppendFormat(b []byte, layout string) []byte {
 	return d.t.AppendFormat(b, layout)
 }
 
-// MarshalJSON implements the json.Marshaler interface.
+// MarshalJSON implements the json.Marshaller interface.
 // The time is a quoted string in RFC 3339 format.
 func (d Date) MarshalJSON() ([]byte, error) {
 	if y := d.Year(); y < 0 || y >= 10000 {
@@ -56,7 +56,7 @@ func (d Date) MarshalJSON() ([]byte, error) {
 	return b, nil
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface.
+// UnmarshalJSON implements the json.Unmarshaller interface.
 // The time is expected to be a quoted string in RFC 3339 format.
 func (d *Date) UnmarshalJSON(data []byte) error {
 	// Ignore null, like in the main JSON package
@@ -82,14 +82,8 @@ func (d *Date) Scan(value interface{}) error {
 			return err
 		}
 		return nil
-	case []byte:
-		*d, err = Parse(RFC3339, string(x))
-		if err != nil {
-			return err
-		}
-		return nil
 	case time.Time:
-		*d = Date{x}
+		*d = Date{x.Round(Day)}
 		return nil
 	default:
 		return fmt.Errorf("godate: cannot scan type %T into godate.Date: %v", value, value)
