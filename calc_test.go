@@ -1,7 +1,6 @@
 package godate
 
 import (
-	"fmt"
 	"testing"
 	"time"
 )
@@ -56,10 +55,6 @@ func TestDate_After(t *testing.T) {
 	}
 
 	for i, test := range tests {
-		fmt.Println("------")
-		fmt.Println(i)
-		fmt.Println(d)
-		fmt.Println(test.u)
 		if d.After(test.u) != test.expectedResult {
 			t.Errorf("expected result is %v, but got %v. d=%v, u=%v, test idx=%d",
 				test.expectedResult, d.After(test.u), d, test.u, i)
