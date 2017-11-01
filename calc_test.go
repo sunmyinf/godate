@@ -1,7 +1,6 @@
 package godate
 
 import (
-	"fmt"
 	"testing"
 	"time"
 )
@@ -20,12 +19,9 @@ func TestDate_Equal(t *testing.T) {
 		{u.Add(1, 0, 0), false},
 		{u.Add(0, 1, 0), false},
 		{u.Add(0, 0, 1), false},
-		{Date{u.t.Add(time.Hour)}, true},
-		{Date{u.t.Add(time.Minute)}, true},
-		{Date{u.t.Add(time.Second)}, true},
-		{Date{u.t.Add(time.Millisecond)}, true},
-		{Date{u.t.Add(time.Microsecond)}, true},
-		{Date{u.t.Add(time.Nanosecond)}, true},
+		{u.Add(-1, 0, 0), false},
+		{u.Add(0, -1, 0), false},
+		{u.Add(0, 0, -1), false},
 	}
 
 	for i, test := range tests {
@@ -47,19 +43,9 @@ func TestDate_After(t *testing.T) {
 		{d.Add(1, -1, -1), false},
 		{d.Add(0, 1, -1), false},
 		{d.Add(0, 0, 1), false},
-		{Date{d.t.Add(-time.Hour)}, false},
-		{Date{d.t.Add(-time.Minute)}, false},
-		{Date{d.t.Add(-time.Second)}, false},
-		{Date{d.t.Add(-time.Millisecond)}, false},
-		{Date{d.t.Add(-time.Microsecond)}, false},
-		{Date{d.t.Add(-time.Nanosecond)}, false},
 	}
 
 	for i, test := range tests {
-		fmt.Println("------")
-		fmt.Println(i)
-		fmt.Println(d)
-		fmt.Println(test.u)
 		if d.After(test.u) != test.expectedResult {
 			t.Errorf("expected result is %v, but got %v. d=%v, u=%v, test idx=%d",
 				test.expectedResult, d.After(test.u), d, test.u, i)
@@ -78,12 +64,6 @@ func TestDate_Before(t *testing.T) {
 		{d.Add(-1, 1, 1), false},
 		{d.Add(0, -1, 1), false},
 		{d.Add(0, 0, -1), false},
-		{Date{d.t.Add(time.Hour)}, false},
-		{Date{d.t.Add(time.Minute)}, false},
-		{Date{d.t.Add(time.Second)}, false},
-		{Date{d.t.Add(time.Millisecond)}, false},
-		{Date{d.t.Add(time.Microsecond)}, false},
-		{Date{d.t.Add(time.Nanosecond)}, false},
 	}
 
 	for i, test := range tests {

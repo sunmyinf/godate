@@ -15,7 +15,7 @@ func New(year, month, day int, loc *time.Location) Date {
 // Today returns Date of today
 func Today() Date {
 	return Date{
-		time.Now(),
+		time.Now().Round(Day),
 	}
 }
 
