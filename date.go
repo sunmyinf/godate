@@ -2,51 +2,51 @@ package godate
 
 import "time"
 
-// Date handles time.Time as date handler
+// Date has Year, Month, Day fields.
+// Date don't have Location or TimeZone information.
 type Date struct {
-	t time.Time
+	Year  int
+	Month time.Month
+	Day   int
 }
 
-// New returns Date from specified year, month, day and location
-func New(year, month, day int, loc *time.Location) Date {
-	return Date{time.Date(year, time.Month(month), day, 0, 0, 0, 0, loc)}
+// New returns Date from specified year, month, day.
+func New(year int, month time.Month, day int) Date {
+	return Date{year, month, day}
+}
+
+// NewFromTime returns Date generated from time.Time's value
+func NewFromTime(t time.Time) Date {
+	return New(t.Year(), t.Month(), t.Day())
 }
 
 // Today returns Date of today
 func Today() Date {
+	now := time.Now()
 	return Date{
-		time.Now().Round(Day),
+		now.Year(),
+		now.Month(),
+		now.Day(),
 	}
+}
+
+// ToTime returns time.Time instance in UTC from d.
+func (d Date) ToTime() time.Time {
+	return time.Date(d.Year, d.Month, d.Day, 0, 0, 0, 0, time.UTC)
 }
 
 // YearDay is wrapper of YearDay method of time.Time
 func (d Date) YearDay() int {
-	return d.t.YearDay()
+	return d.ToTime().YearDay()
 }
 
-// IsZero reports whether t represents the zero time instant,
-// January 1, year 1, 00:00:00 UTC.
+// IsZero reports whether d represents the zero date instant,
 func (d Date) IsZero() bool {
-	return d.t.IsZero()
+	return d.Year == 0 && d.Month == time.Month(0) && d.Day == 0
 }
 
-// Year returns year of date
-func (d Date) Year() int {
-	return d.t.Year()
-}
-
-// Month returns month of date
-func (d Date) Month() time.Month {
-	return d.t.Month()
-}
-
-// Day returns day of date
-func (d Date) Day() int {
-	return d.t.Day()
-}
-
-// Unix returns t as a Unix time, the number of seconds elapsed
+// Unix returns d as a Unix time, the number of seconds elapsed
 // Date.Unix() should calculate Unix time not including time.
 func (d Date) Unix() int64 {
-	return d.t.Round(time.Hour * 24).Unix()
+	return d.ToTime().Unix()
 }

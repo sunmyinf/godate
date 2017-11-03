@@ -17,17 +17,21 @@ const (
 
 // Parse returns Date from time.Parse value
 func Parse(layout, value string) (Date, error) {
-	p, err := time.Parse(layout, value)
+	t, err := time.Parse(layout, value)
 	if err != nil {
 		return Date{}, err
 	}
-
-	return Date{p.Round(Day)}, nil
+	return NewFromTime(t), nil
 }
 
 // Format is wrapper of Format method of time.Time
+// When IsZero is true, return Janualy 1, 0001
 func (d Date) Format(format string) string {
-	return d.t.Format(format)
+	if d.IsZero() {
+		t := time.Time{}
+		return t.Format(format)
+	}
+	return d.ToTime().Format(format)
 }
 
 // String returns string of RFC3339 date format
@@ -37,16 +41,15 @@ func (d Date) String() string {
 
 // AppendFormat is wrapper of AppendFormat method of time.Time
 func (d Date) AppendFormat(b []byte, layout string) []byte {
-	return d.t.AppendFormat(b, layout)
+	return d.ToTime().AppendFormat(b, layout)
 }
 
 // MarshalJSON implements the json.Marshaller interface.
-// The time is a quoted string in RFC 3339 format.
+// The date is a quoted string in RFC 3339 format.
 func (d Date) MarshalJSON() ([]byte, error) {
-	if y := d.Year(); y < 0 || y >= 10000 {
+	if y := d.Year; y < 0 || y >= 10000 {
 		// RFC 3339 is clear that years are 4 digits exactly.
-		// See golang.org/issue/4556#c15 for more discussion.
-		return nil, errors.New("Time.MarshalJSON: year outside of range [0,9999]")
+		return nil, errors.New("Date.MarshalJSON: year outside of range [0,9999]")
 	}
 
 	b := make([]byte, 0, len(RFC3339)+2)
@@ -57,13 +60,12 @@ func (d Date) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface.
-// The time is expected to be a quoted string in RFC 3339 format.
+// The date is expected to be a quoted string in RFC 3339 format.
 func (d *Date) UnmarshalJSON(data []byte) error {
 	// Ignore null, like in the main JSON package
 	if string(data) == "null" {
 		return nil
 	}
-	// Fractional seconds are handled implicitly by Parse.
 	var err error
 	*d, err = Parse(`"`+RFC3339+`"`, string(data))
 	return err
@@ -83,7 +85,7 @@ func (d *Date) Scan(value interface{}) error {
 		}
 		return nil
 	case time.Time:
-		*d = Date{x.Round(Day)}
+		*d = NewFromTime(x)
 		return nil
 	default:
 		return fmt.Errorf("godate: cannot scan type %T into godate.Date: %v", value, value)

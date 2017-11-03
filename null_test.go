@@ -3,11 +3,10 @@ package godate
 import (
 	"reflect"
 	"testing"
-	"time"
 )
 
 func TestNewNullDate(t *testing.T) {
-	nd := NewNullDate(New(2017, 10, 27, time.UTC), true)
+	nd := NewNullDate(New(2017, 10, 27), true)
 	if !nd.Valid {
 		t.Errorf("expected valid, but invalid")
 	}
@@ -25,7 +24,7 @@ func TestNewNullDate(t *testing.T) {
 }
 
 func TestNullDateFrom(t *testing.T) {
-	nd := NullDateFrom(New(2017, 10, 27, time.UTC))
+	nd := NullDateFrom(New(2017, 10, 27))
 	if !nd.Valid {
 		t.Errorf("expected valid, but invalid")
 	}
@@ -35,7 +34,7 @@ func TestNullDateFrom(t *testing.T) {
 }
 
 func TestNullDateFromPtr(t *testing.T) {
-	d := New(2017, 10, 27, time.UTC)
+	d := New(2017, 10, 27)
 	nd := NullDateFromPtr(&d)
 	if !nd.Valid {
 		t.Errorf("expected valid, but invalid")
@@ -59,7 +58,7 @@ func TestNullDate_SetValid(t *testing.T) {
 		t.Fatal("unexpected nd.Valid is true")
 	}
 
-	nd.SetValid(New(2017, 10, 27, time.UTC))
+	nd.SetValid(New(2017, 10, 27))
 	if !nd.Valid {
 		t.Errorf("expected valid, but invalid")
 	}
@@ -69,7 +68,7 @@ func TestNullDate_SetValid(t *testing.T) {
 }
 
 func TestNullDate_Ptr(t *testing.T) {
-	d := New(2017, 10, 27, time.UTC)
+	d := New(2017, 10, 27)
 	nd := NullDateFrom(d)
 	dp := nd.Ptr()
 
@@ -85,7 +84,7 @@ func TestNullDate_String(t *testing.T) {
 		t.Errorf("expected receive empty string, but got %s", nd.String())
 	}
 
-	d := New(2017, 10, 27, time.UTC)
+	d := New(2017, 10, 27)
 	nd = NullDateFrom(d)
 	if nd.String() != "2017-10-27" {
 		t.Errorf("expected receive '2017-10-27', but got %s", nd.String())
@@ -98,7 +97,7 @@ func TestNullDate_Format(t *testing.T) {
 		t.Errorf("expected receive empty string, but got %s", nd.String())
 	}
 
-	d := New(2017, 10, 27, time.UTC)
+	d := New(2017, 10, 27)
 	nd = NullDateFrom(d)
 	if nd.Format("2006/01/02") != "2017/10/27" {
 		t.Errorf("expected receive '2017/10/27', but got %s", nd.String())
