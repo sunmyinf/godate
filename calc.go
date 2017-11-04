@@ -3,10 +3,11 @@ package godate
 import "time"
 
 // Equal reports whether d and u represent the same time instant.
+// This is an alias of == operation.
 func (d Date) Equal(u Date) bool {
-	return d.Year() == u.Year() &&
-		d.Month() == u.Month() &&
-		d.Day() == u.Day()
+	return d.Year == u.Year &&
+		d.Month == u.Month &&
+		d.Day == u.Day
 }
 
 // After reports whether the time instant d is after u.
@@ -14,9 +15,9 @@ func (d Date) After(u Date) bool {
 	if d.Equal(u) {
 		return false
 	}
-	if d.Year() > u.Year() {
+	if d.Year > u.Year {
 		return true
-	} else if d.Year() < u.Year() {
+	} else if d.Year < u.Year {
 		return false
 	}
 	return d.YearDay() > u.YearDay()
@@ -27,9 +28,9 @@ func (d Date) Before(u Date) bool {
 	if d.Equal(u) {
 		return false
 	}
-	if d.Year() < u.Year() {
+	if d.Year < u.Year {
 		return true
-	} else if d.Year() > u.Year() {
+	} else if d.Year > u.Year {
 		return false
 	}
 	return d.YearDay() < u.YearDay()
@@ -37,7 +38,8 @@ func (d Date) Before(u Date) bool {
 
 // Add year, month, day to d
 func (d Date) Add(years, months, days int) Date {
-	return Date{d.t.AddDate(years, months, days)}
+	t := d.ToTime().AddDate(years, months, days)
+	return Date{t.Year(), t.Month(), t.Day()}
 }
 
 const (
@@ -56,5 +58,5 @@ func Since(d Date) time.Duration {
 
 // Sub returns the Duration resulted from d-u.
 func (d Date) Sub(u Date) time.Duration {
-	return d.t.Sub(u.t)
+	return d.ToTime().Sub(u.ToTime())
 }

@@ -12,16 +12,15 @@ type comparingTest struct {
 
 func TestDate_Equal(t *testing.T) {
 	d := Today()
-	u := d
 
 	tests := []comparingTest{
-		{u, true},
-		{u.Add(1, 0, 0), false},
-		{u.Add(0, 1, 0), false},
-		{u.Add(0, 0, 1), false},
-		{u.Add(-1, 0, 0), false},
-		{u.Add(0, -1, 0), false},
-		{u.Add(0, 0, -1), false},
+		{d, true},
+		{d.Add(1, 0, 0), false},
+		{d.Add(0, 1, 0), false},
+		{d.Add(0, 0, 1), false},
+		{d.Add(-1, 0, 0), false},
+		{d.Add(0, -1, 0), false},
+		{d.Add(0, 0, -1), false},
 	}
 
 	for i, test := range tests {
@@ -75,7 +74,7 @@ func TestDate_Before(t *testing.T) {
 }
 
 func TestDate_Add(t *testing.T) {
-	d := New(2017, 10, 26, time.UTC)
+	d := New(2017, 10, 26)
 	u := d.Add(1, 1, 1)
 	if u.String() != "2018-11-27" {
 		t.Errorf("got unexpected date string=%s", u.String())
@@ -96,26 +95,26 @@ type subTest struct {
 func TestDate_Sub(t *testing.T) {
 	tests := []subTest{
 		// in same month
-		{New(2017, 10, 1, time.UTC), New(2017, 10, 1, time.UTC), 0},
-		{New(2017, 10, 2, time.UTC), New(2017, 10, 1, time.UTC), 1},
-		{New(2017, 10, 1, time.UTC), New(2017, 10, 2, time.UTC), -1},
+		{New(2017, 10, 1), New(2017, 10, 1), 0},
+		{New(2017, 10, 2), New(2017, 10, 1), 1},
+		{New(2017, 10, 1), New(2017, 10, 2), -1},
 		// in same year that is not leap
-		{New(2017, 11, 1, time.UTC), New(2017, 10, 1, time.UTC), 31},
-		{New(2017, 12, 1, time.UTC), New(2017, 11, 1, time.UTC), 30},
-		{New(2017, 12, 1, time.UTC), New(2017, 10, 1, time.UTC), 31 + 30},
-		{New(2017, 10, 1, time.UTC), New(2017, 11, 1, time.UTC), -31},
-		{New(2017, 11, 1, time.UTC), New(2017, 12, 1, time.UTC), -30},
-		{New(2017, 10, 1, time.UTC), New(2017, 12, 1, time.UTC), -31 - 30},
+		{New(2017, 11, 1), New(2017, 10, 1), 31},
+		{New(2017, 12, 1), New(2017, 11, 1), 30},
+		{New(2017, 12, 1), New(2017, 10, 1), 31 + 30},
+		{New(2017, 10, 1), New(2017, 11, 1), -31},
+		{New(2017, 11, 1), New(2017, 12, 1), -30},
+		{New(2017, 10, 1), New(2017, 12, 1), -31 - 30},
 		// over some years that are not leap
-		{New(2018, 1, 1, time.UTC), New(2017, 1, 1, time.UTC), 365},
-		{New(2019, 1, 1, time.UTC), New(2017, 1, 1, time.UTC), 365 * 2},
-		{New(2017, 1, 1, time.UTC), New(2018, 1, 1, time.UTC), -365},
-		{New(2017, 1, 1, time.UTC), New(2019, 1, 1, time.UTC), -365 * 2},
+		{New(2018, 1, 1), New(2017, 1, 1), 365},
+		{New(2019, 1, 1), New(2017, 1, 1), 365 * 2},
+		{New(2017, 1, 1), New(2018, 1, 1), -365},
+		{New(2017, 1, 1), New(2019, 1, 1), -365 * 2},
 		// over a leap year
-		{New(2021, 1, 1, time.UTC), New(2020, 1, 1, time.UTC), 366},
-		{New(2021, 1, 1, time.UTC), New(2019, 1, 1, time.UTC), 366 + 365},
-		{New(2020, 1, 1, time.UTC), New(2021, 1, 1, time.UTC), -366},
-		{New(2019, 1, 1, time.UTC), New(2021, 1, 1, time.UTC), -366 - 365},
+		{New(2021, 1, 1), New(2020, 1, 1), 366},
+		{New(2021, 1, 1), New(2019, 1, 1), 366 + 365},
+		{New(2020, 1, 1), New(2021, 1, 1), -366},
+		{New(2019, 1, 1), New(2021, 1, 1), -366 - 365},
 	}
 
 	for i, test := range tests {

@@ -19,7 +19,7 @@ func (nd *NullDate) Scan(value interface{}) error {
 	var err error
 	switch x := value.(type) {
 	case time.Time:
-		nd.Date = Date{x}
+		nd.Date = NewFromTime(x)
 	case nil:
 		nd.Valid = false
 		return nil
@@ -76,7 +76,7 @@ func (nd *NullDate) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v.(type) {
-	case string:
+	case string, time.Time:
 		err = nd.Date.UnmarshalJSON(data)
 	case nil:
 		nd.Valid = false
