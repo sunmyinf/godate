@@ -5,35 +5,29 @@ import "time"
 // Equal reports whether d and u represent the same time instant.
 // This is an alias of == operation.
 func (d Date) Equal(u Date) bool {
-	return d.Year == u.Year &&
-		d.Month == u.Month &&
-		d.Day == u.Day
+	return d == u
 }
 
 // After reports whether the time instant d is after u.
 func (d Date) After(u Date) bool {
-	if d.Equal(u) {
-		return false
+	if d.Year != u.Year {
+		return d.Year > u.Year
 	}
-	if d.Year > u.Year {
-		return true
-	} else if d.Year < u.Year {
-		return false
+	if d.Month != u.Month {
+		return d.Month > u.Month
 	}
-	return d.YearDay() > u.YearDay()
+	return d.Day > u.Day
 }
 
 // Before reports whether the time instant d is before u.
 func (d Date) Before(u Date) bool {
-	if d.Equal(u) {
-		return false
+	if d.Year != u.Year {
+		return d.Year < u.Year
 	}
-	if d.Year < u.Year {
-		return true
-	} else if d.Year > u.Year {
-		return false
+	if d.Month != u.Month {
+		return d.Month < u.Month
 	}
-	return d.YearDay() < u.YearDay()
+	return d.Day < u.Day
 }
 
 // Add year, month, day to d
@@ -42,13 +36,8 @@ func (d Date) Add(years, months, days int) Date {
 	return Date{t.Year(), t.Month(), t.Day()}
 }
 
-const (
-	// Day represents a day based on time.Duration
-	Day time.Duration = 24 * time.Hour
-
-	daysPerBasicYear time.Duration = 365 * Day
-	daysPerLeapYear  time.Duration = 366 * Day
-)
+// Day represents a day based on time.Duration
+const Day time.Duration = 24 * time.Hour
 
 // Since returns the time elapsed since d.
 // It is shorthand for godate.Today().Sub(d).
