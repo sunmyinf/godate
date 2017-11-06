@@ -45,8 +45,8 @@ func TestDate_YearDay(t *testing.T) {
 	}
 
 	d = New(2016, 12, 31)
-	if d.YearDay() != int(daysPerLeapYear/Day) {
-		t.Errorf("expected %d as the 2016-12-31's YearDay, but got %d", int(daysPerLeapYear/Day), d.YearDay())
+	if d.YearDay() != 366 {
+		t.Errorf("expected %d as the 2016-12-31's YearDay, but got %d", 366, d.YearDay())
 	}
 }
 
