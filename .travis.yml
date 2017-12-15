@@ -1,5 +1,12 @@
 language: go
 go:
   - 1.9.1
+
+install:
+  - go get github.com/haya14busa/goverage
+
 script:
-  - go test -v ./...
+  - goverage -v -race -coverprofile=coverage.txt ./...
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
