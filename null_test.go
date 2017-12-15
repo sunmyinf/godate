@@ -103,3 +103,28 @@ func TestNullDate_Format(t *testing.T) {
 		t.Errorf("expected receive '2017/10/27', but got %s", nd.String())
 	}
 }
+
+func TestNullDate_IsZero(t *testing.T) {
+	nd := NewNullDate(Date{}, true)
+	if nd.IsZero() {
+		t.Errorf("expected NullDate.IsZero is false but got true")
+	}
+
+	nd.Valid = false
+	if !nd.IsZero() {
+		t.Errorf("expected NullDate.IsZero is true but got false")
+	}
+}
+
+func TestNullDate_ValueOrZero(t *testing.T) {
+	d := New(2017, 12, 15)
+	nd := NewNullDate(d, true)
+	if nd.ValueOrZero() != d {
+		t.Errorf("expected ValueOrZero() is equal to d, but not equal. ValueOrZero=%v, d=%v", nd.ValueOrZero(), d)
+	}
+
+	nd.Valid = false
+	if !nd.ValueOrZero().IsZero() {
+		t.Errorf("expected ValueOrZero is zero. but got zero")
+	}
+}

@@ -9,8 +9,8 @@ const ZeroDays ElapsedDays = 0
 type ElapsedDays int64
 
 // Date represents date under the proleptic Gregorian calendar used by ISO 8601.
-// Zero value of Date is 1, January, 1.
-// In v1.0.0, representation of BC (e.g. "-0912-01-01") is unsupported. (Please contribute!)
+// Zero value is 1, January, 1.
+// In v1.0.0, formatting BC (e.g. "-0912-01-01") is unsupported. (Please contribute!)
 type Date struct {
 	days ElapsedDays
 }
