@@ -1,13 +1,14 @@
 package godate
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
 
 func TestNew(t *testing.T) {
 	d := New(2017, time.November, 3)
-	if d.IsZero() || d.Year != 2017 || d.Month != time.November || d.Day != 3 {
+	if d.IsZero() || d.Year() != 2017 || d.Month() != time.November || d.Day() != 3 {
 		t.Errorf("unexpected date from New = %v", d)
 	}
 }
@@ -16,12 +17,22 @@ func TestNewFromTime(t *testing.T) {
 	tm := time.Now()
 	d := NewFromTime(tm)
 
-	if d.IsZero() || d.Year != tm.Year() || d.Month != tm.Month() || d.Day != tm.Day() {
+	if d.IsZero() || d.Year() != tm.Year() || d.Month() != tm.Month() || d.Day() != tm.Day() {
 		t.Errorf("unexpected date from NewFromTime = %v", d)
 	}
 }
 
+func TestNewFromElapsedDays(t *testing.T) {
+	d := NewFromElapsedDays(ElapsedDays(719162))
+	if d.Year() != 1970 || d.Month() != time.January || d.Day() != 1 {
+		t.Errorf("unexpected date from NewFromElapsedDays = %v", d)
+	}
+}
+
 func TestToday(t *testing.T) {
+	d := New(1970, 1, 1)
+	fmt.Println(d.days)
+
 	today := Today()
 	if today.IsZero() {
 		t.Errorf("unexpected Today is zero")
@@ -31,7 +42,6 @@ func TestToday(t *testing.T) {
 func TestDate_ToTime(t *testing.T) {
 	d := New(2017, time.November, 3)
 	tm := d.ToTime()
-	time.Now()
 
 	if tm.IsZero() || tm.Format(time.RFC3339) != "2017-11-03T00:00:00Z" {
 		t.Errorf("unexpected time from Date.ToTime = %s", tm.Format(time.RFC3339))

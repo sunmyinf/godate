@@ -1,6 +1,8 @@
 package godate
 
 import (
+	"bytes"
+	"fmt"
 	"testing"
 	"time"
 )
@@ -38,7 +40,7 @@ func TestDate_Format(t *testing.T) {
 	}
 
 	d = Date{}
-	if d.Format(RFC3339) != "" {
+	if d.Format(RFC3339) != "0001-01-01" {
 		t.Errorf("expected zero date is formatted as empty, but got %s", d.Format(RFC3339))
 	}
 }
@@ -50,7 +52,7 @@ func TestDate_String(t *testing.T) {
 	}
 
 	d = Date{}
-	if d.Format(RFC3339) != "" {
+	if d.Format(RFC3339) != "0001-01-01" {
 		t.Errorf("expected zero date is formatted as empty, but got %s", d.Format(RFC3339))
 	}
 }
@@ -66,7 +68,9 @@ func TestDate_MarshalJSON(t *testing.T) {
 	d = Date{}
 	if buf, err := d.MarshalJSON(); err != nil {
 		t.Errorf("expected to be marshaled, but got error %v", err)
-	} else if string(buf) != "null" {
+	} else if bytes.Equal(buf, []byte("0001-01-01")) {
+		fmt.Println(string(buf))
+		fmt.Println(string(buf) != "0001-01-01")
 		t.Errorf("expected formatted json string, but got %s", buf)
 	}
 }
@@ -80,10 +84,8 @@ func TestDate_UnmarshalJSON(t *testing.T) {
 	}
 
 	d = New(2017, 10, 28)
-	if err := d.UnmarshalJSON([]byte("null")); err != nil {
-		t.Errorf("expected to be unmarshaled, but got error %v", err)
-	} else if !d.IsZero() {
-		t.Errorf("expected 0-value date, but got %s", d)
+	if err := d.UnmarshalJSON([]byte("null")); err == nil {
+		t.Errorf("expected to be raised error, but not got error")
 	}
 }
 
@@ -98,7 +100,7 @@ func TestDate_Value(t *testing.T) {
 	d = Date{}
 	if v, err := d.Value(); err != nil {
 		t.Errorf("expected to get sql value, but got error %v", err)
-	} else if v != nil {
+	} else if v != "0001-01-01" {
 		t.Errorf("expected nil, but got %s", v)
 	}
 }
@@ -119,9 +121,7 @@ func TestDate_Scan(t *testing.T) {
 	}
 
 	d = New(2017, 10, 28)
-	if err := d.Scan(nil); err != nil {
-		t.Errorf("expected to be scanned, but got error %v", err)
-	} else if !d.IsZero() {
-		t.Errorf("expected 0-value date, but got %s", d)
+	if err := d.Scan(nil); err == nil {
+		t.Errorf("expected not to be scanned, but scanned")
 	}
 }

@@ -2,7 +2,6 @@ package godate
 
 import (
 	"testing"
-	"time"
 )
 
 type comparingTest struct {
@@ -118,7 +117,7 @@ func TestDate_Sub(t *testing.T) {
 	}
 
 	for i, test := range tests {
-		if result := test.d.Sub(test.u); result != time.Duration(test.days)*Day {
+		if result := test.d.Sub(test.u); result != ElapsedDays(test.days) {
 			t.Errorf("idx=%d: expected value is %d, but got %d", i, test.days, result)
 		}
 	}

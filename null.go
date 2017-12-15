@@ -117,3 +117,16 @@ func (nd NullDate) Format(layout string) string {
 	}
 	return nd.Date.Format(layout)
 }
+
+// IsZero returns true for invalid Date.
+func (nd NullDate) IsZero() bool {
+	return !nd.Valid
+}
+
+// ValueOrZero returns the inner value if valid, otherwise zero.
+func (nd NullDate) ValueOrZero() Date {
+	if !nd.Valid {
+		return Date{}
+	}
+	return nd.Date
+}
