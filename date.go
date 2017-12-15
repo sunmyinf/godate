@@ -1,8 +1,6 @@
 package godate
 
-import (
-	"time"
-)
+import "time"
 
 // ZeroDays represents 1, January, 1
 const ZeroDays ElapsedDays = 0

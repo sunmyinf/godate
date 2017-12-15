@@ -1,7 +1,6 @@
 package godate
 
 import (
-	"fmt"
 	"testing"
 	"time"
 )
@@ -30,9 +29,6 @@ func TestNewFromElapsedDays(t *testing.T) {
 }
 
 func TestToday(t *testing.T) {
-	d := New(1970, 1, 1)
-	fmt.Println(d.days)
-
 	today := Today()
 	if today.IsZero() {
 		t.Errorf("unexpected Today is zero")
