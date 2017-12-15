@@ -43,17 +43,17 @@ func (d Date) ToTime() time.Time {
 	return toTime(d.days)
 }
 
-// Year
+// Year returns year of date
 func (d Date) Year() int {
 	return d.ToTime().Year()
 }
 
-// Month
+// Month returns month of date
 func (d Date) Month() time.Month {
 	return d.ToTime().Month()
 }
 
-// Day
+// Day returns day of date
 func (d Date) Day() int {
 	return d.ToTime().Day()
 }
