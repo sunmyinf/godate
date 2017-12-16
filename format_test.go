@@ -124,4 +124,7 @@ func TestDate_Scan(t *testing.T) {
 	if err := d.Scan(nil); err == nil {
 		t.Errorf("expected not to be scanned, but scanned")
 	}
+	if err := d.Scan("2017/10/28"); err == nil {
+		t.Errorf("expected not to be scanned, but scanned")
+	}
 }

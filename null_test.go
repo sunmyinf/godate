@@ -161,12 +161,12 @@ func TestNullDate_Scan(t *testing.T) {
 	}{
 		{
 			value:         "2017-12-10",
-			expected:      NullDateFrom(New(2017, 12, 10)),
+			expected:      NullDateFrom(New(2017, time.December, 10)),
 			errorExpected: false,
 		},
 		{
-			value:         time.Date(2017, 12, 16, 0, 0, 0, 0, time.UTC),
-			expected:      NullDateFrom(New(2017, 12, 16)),
+			value:         time.Date(2017, time.December, 16, 0, 0, 0, 0, time.UTC),
+			expected:      NullDateFrom(New(2017, time.December, 16)),
 			errorExpected: false,
 		},
 		{
@@ -176,6 +176,10 @@ func TestNullDate_Scan(t *testing.T) {
 		},
 		{
 			value:         6,
+			errorExpected: true,
+		},
+		{
+			value:         "2017/12/10",
 			errorExpected: true,
 		},
 	}
@@ -201,7 +205,7 @@ func TestNullDate_Scan(t *testing.T) {
 }
 
 func TestNullDate_MarshalJSON(t *testing.T) {
-	d := New(2017, 12, 15)
+	d := New(2017, time.December, 15)
 	nd := NullDateFrom(d)
 
 	b, err := nd.MarshalJSON()
@@ -227,7 +231,7 @@ func TestNullDate_UnmarshalJSON(t *testing.T) {
 	}{
 		{
 			data:          []byte("\"2017-12-10\""),
-			expected:      NullDateFrom(New(2017, 12, 10)),
+			expected:      NullDateFrom(New(2017, time.December, 10)),
 			errorExpected: false,
 		},
 		{
@@ -237,6 +241,10 @@ func TestNullDate_UnmarshalJSON(t *testing.T) {
 		},
 		{
 			data:          []byte("6"),
+			errorExpected: true,
+		},
+		{
+			data:          []byte("\"2017/12/10\""),
 			errorExpected: true,
 		},
 	}
