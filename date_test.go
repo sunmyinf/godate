@@ -10,14 +10,39 @@ func TestNew(t *testing.T) {
 	if d.IsZero() || d.Year() != 2017 || d.Month() != time.November || d.Day() != 3 {
 		t.Errorf("unexpected date from New = %v", d)
 	}
+
+	d = New(1970, time.January, 1)
+	if d.IsZero() || d.Year() != 1970 || d.Month() != time.January || d.Day() != 1 {
+		t.Errorf("unexpected date from New = %v", d)
+	}
+
+	d = New(1969, time.December, 31)
+	if d.IsZero() || d.Year() != 1969 || d.Month() != time.December || d.Day() != 31 {
+		t.Errorf("unexpected date from New = %v", d)
+	}
+
+	d = Date{}
+	if d.Year() != 1 || d.Month() != time.January || d.Day() != 1 {
+		t.Errorf("unexpected date = %v, expect zero date", d)
+	}
 }
 
 func TestNewFromTime(t *testing.T) {
-	tm := time.Now()
-	d := NewFromTime(tm)
+	now := time.Now()
+	zeroTime := time.Time{}
 
-	if d.IsZero() || d.Year() != tm.Year() || d.Month() != tm.Month() || d.Day() != tm.Day() {
-		t.Errorf("unexpected date from NewFromTime = %v", d)
+	times := []time.Time{
+		now,
+		time.Date(1969, 12, 1, 0, 0, 1, 0, time.UTC),
+		zeroTime,
+	}
+
+	for i, tm := range times {
+		d := NewFromTime(tm)
+
+		if d.Year() != tm.Year() || d.Month() != tm.Month() || d.Day() != tm.Day() {
+			t.Errorf("idx=%d unexpected date from NewFromTime=%v, expected=%v", i, d, tm.Format(RFC3339))
+		}
 	}
 }
 
