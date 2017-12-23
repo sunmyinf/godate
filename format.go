@@ -27,9 +27,6 @@ func Parse(layout, value string) (Date, error) {
 // Format is wrapper of Format method of time.Time
 // When IsZero is true, returns an empty string
 func (d Date) Format(format string) string {
-	if d.IsZero() {
-		return ""
-	}
 	return d.ToTime().Format(format)
 }
 
@@ -39,21 +36,14 @@ func (d Date) String() string {
 }
 
 // AppendFormat is wrapper of AppendFormat method of time.Time
-// When IsZero is true, appends nothing
 func (d Date) AppendFormat(b []byte, layout string) []byte {
-	if d.IsZero() {
-		return b
-	}
 	return d.ToTime().AppendFormat(b, layout)
 }
 
 // MarshalJSON implements the json.Marshaller interface.
 // The date is a quoted string in RFC 3339 format.
 func (d Date) MarshalJSON() ([]byte, error) {
-	if d.IsZero() {
-		return []byte("null"), nil
-	}
-	if y := d.Year; y < 0 || y >= 10000 {
+	if y := d.Year(); y < 0 || y >= 10000 {
 		// RFC 3339 is clear that years are 4 digits exactly.
 		return nil, errors.New("Date.MarshalJSON: year outside of range [0,9999]")
 	}
@@ -68,11 +58,6 @@ func (d Date) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON implements the json.Unmarshaller interface.
 // The date is expected to be a quoted string in RFC 3339 format.
 func (d *Date) UnmarshalJSON(data []byte) error {
-	// Ignore null, like in the main JSON package
-	if string(data) == "null" {
-		*d = Date{}
-		return nil
-	}
 	var err error
 	*d, err = Parse(`"`+RFC3339+`"`, string(data))
 	return err
@@ -80,9 +65,6 @@ func (d *Date) UnmarshalJSON(data []byte) error {
 
 // Value implements the driver Valuer interface.
 func (d Date) Value() (driver.Value, error) {
-	if d.IsZero() {
-		return nil, nil
-	}
 	return d.String(), nil
 }
 
@@ -98,9 +80,6 @@ func (d *Date) Scan(value interface{}) error {
 		return nil
 	case time.Time:
 		*d = NewFromTime(x)
-		return nil
-	case nil:
-		*d = Date{}
 		return nil
 	default:
 		return fmt.Errorf("godate: cannot scan type %T into godate.Date: %v", value, value)

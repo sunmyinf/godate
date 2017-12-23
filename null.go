@@ -16,18 +16,23 @@ type NullDate struct {
 
 // Scan implements the Scanner interface.
 func (nd *NullDate) Scan(value interface{}) error {
-	var err error
 	switch x := value.(type) {
+	case string:
+		d, err := Parse(RFC3339, x)
+		if err != nil {
+			return err
+		}
+		nd.SetValid(d)
+		return nil
 	case time.Time:
-		nd.Date = NewFromTime(x)
+		nd.SetValid(NewFromTime(x))
+		return nil
 	case nil:
 		nd.Valid = false
 		return nil
 	default:
-		err = fmt.Errorf("godate: cannot scan type %T into godate.NullDate: %v", value, value)
+		return fmt.Errorf("godate: cannot scan type %T into godate.NullDate: %v", value, value)
 	}
-	nd.Valid = err == nil
-	return err
 }
 
 // Value implements the driver Valuer interface.
@@ -38,7 +43,7 @@ func (nd NullDate) Value() (driver.Value, error) {
 	return nd.Date.String(), nil
 }
 
-// NewNullDate creates a new Date.
+// NewNullDate creates a new NullDate.
 func NewNullDate(d Date, valid bool) NullDate {
 	return NullDate{
 		Date:  d,
@@ -51,7 +56,7 @@ func NullDateFrom(d Date) NullDate {
 	return NewNullDate(d, true)
 }
 
-// NullDateFromPtr creates a new Date that will be null if d is nil.
+// NullDateFromPtr creates a new NullDate that will be null if d is nil.
 func NullDateFromPtr(d *Date) NullDate {
 	if d == nil {
 		return NewNullDate(Date{}, false)
@@ -70,22 +75,23 @@ func (nd NullDate) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaller.
 func (nd *NullDate) UnmarshalJSON(data []byte) error {
-	var err error
 	var v interface{}
-	if err = json.Unmarshal(data, &v); err != nil {
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v.(type) {
-	case string, time.Time:
-		err = nd.Date.UnmarshalJSON(data)
+	case string:
+		if err := nd.Date.UnmarshalJSON(data); err != nil {
+			return err
+		}
+		nd.Valid = true
+		return nil
 	case nil:
 		nd.Valid = false
 		return nil
 	default:
-		err = fmt.Errorf("godate: cannot unmarshal %v into Go value of type godate.NullDate", reflect.TypeOf(v).Name())
+		return fmt.Errorf("godate: cannot unmarshal %v into Go value of type godate.NullDate", reflect.TypeOf(v).Name())
 	}
-	nd.Valid = err == nil
-	return err
 }
 
 // SetValid changes this Date's value and sets it to be non-null.
@@ -116,4 +122,17 @@ func (nd NullDate) Format(layout string) string {
 		return ""
 	}
 	return nd.Date.Format(layout)
+}
+
+// IsZero returns true for invalid Date.
+func (nd NullDate) IsZero() bool {
+	return !nd.Valid
+}
+
+// ValueOrZero returns the inner value if valid, otherwise zero.
+func (nd NullDate) ValueOrZero() Date {
+	if !nd.Valid {
+		return Date{}
+	}
+	return nd.Date
 }
