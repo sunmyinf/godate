@@ -67,6 +67,20 @@ func TestDate_ToTime(t *testing.T) {
 	if tm.IsZero() || tm.Format(time.RFC3339) != "2017-11-03T00:00:00Z" {
 		t.Errorf("unexpected time from Date.ToTime = %s", tm.Format(time.RFC3339))
 	}
+
+	d = New(1969, time.December, 31)
+	tm = d.ToTime()
+
+	if tm.IsZero() || tm.Format(time.RFC3339) != "1969-12-31T00:00:00Z" {
+		t.Errorf("unexpected time from Date.ToTime = %s", tm.Format(time.RFC3339))
+	}
+
+	d = Date{}
+	tm = d.ToTime()
+
+	if !tm.IsZero() {
+		t.Errorf("expected zero value of time, but got not zero value. %v", tm)
+	}
 }
 
 func TestDate_YearDay(t *testing.T) {
