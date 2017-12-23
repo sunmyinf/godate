@@ -2,13 +2,19 @@
 [![Build Status](https://travis-ci.org/sunmyinf/godate.svg?branch=travis_ci)](https://travis-ci.org/sunmyinf/godate)
 [![Go Report Card](https://goreportcard.com/badge/github.com/sunmyinf/godate)](https://goreportcard.com/report/github.com/sunmyinf/godate)
 [![GoDoc](https://godoc.org/github.com/sunmyinf/godate?status.svg)](https://godoc.org/github.com/sunmyinf/godate)  
+[![codecov](https://codecov.io/gh/sunmyinf/godate/branch/master/graph/badge.svg)](https://codecov.io/gh/sunmyinf/godate)
 
 ## Overview
-godate has `Date` and `NullDate` type to handle date in go.   
-`Date` type is so simple so that we  have not to be concerned with TimeZone or location. Also, `Date` is compatible with `time.Time`.  
-For example, `Date.ToTime()` returns time.Time instance of UTC location that have only Year, Month, Day.
+godate has `Date` and `NullDate` type to handle date easily in go.  
+### Date
+`Date` type is so simple so that we  have not to be concerned with TimeZone or location.  
+Also, `Date` is compatible with `time.Time`. For example, `Date.ToTime()` returns time.Time instance of UTC location.
 
-## Getting Started     
+### NullDate
+`NullDate` is type to handle nullable `Date`.  
+This is same specification of [guregu/null](https://github.com/guregu/null)'s types.
+
+## Getting Started
 
 ### Basic `Date` Usage
 ```go
@@ -25,7 +31,11 @@ fmt.Println(u.Format(godate.RubyDate)) // => "Oct 13 2017"
 // ToTime returns time.Time instance from Date fields value.
 // the returned Time instance is in UTC time zone.
 t := d.ToTime()
-fmt.Println(t.Format(time.RFC3339)) // => "2017-10-13T00:00:00Z" 
+fmt.Println(t.Format(time.RFC3339)) // => "2017-10-13T00:00:00Z"
+
+d = godate.NewFromTime(time.Date(2017, time.May, 16, 0, 0, 0, 0, time.UTC))
+fmt.Println(d) // "2017-05-16"
+
 ```
 Also, implemented formatting methods like `UnmarshalJSON`, `MarshalJSON`, `Scan`, `Value` and so on.
 
