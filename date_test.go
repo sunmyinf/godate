@@ -30,10 +30,12 @@ func TestNew(t *testing.T) {
 func TestNewFromTime(t *testing.T) {
 	now := time.Now()
 	zeroTime := time.Time{}
+	asiaTokyo, _ := time.LoadLocation("Asia/Tokyo")
 
 	times := []time.Time{
 		now,
 		time.Date(1969, 12, 1, 0, 0, 1, 0, time.UTC),
+		time.Date(1969, 12, 1, 0, 0, 1, 0, asiaTokyo),
 		zeroTime,
 	}
 

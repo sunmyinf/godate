@@ -76,8 +76,10 @@ const secondsPerDay int64 = 60 * 60 * 24
 
 var zeroUnix = time.Time{}.Unix()
 
+// Handle time as UTC in godate
 func toElapsedDays(t time.Time) ElapsedDays {
-	elapsedSecs := t.Unix() - zeroUnix
+	_, offset := t.Zone()
+	elapsedSecs := (t.Unix() + int64(offset)) - zeroUnix
 	return ElapsedDays(elapsedSecs / secondsPerDay)
 }
 
